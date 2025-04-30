@@ -184,7 +184,7 @@ const SchoolTransactions = () => {
     { 
       id: 'order_amount', 
       title: 'Order Amount', 
-      sortable: true,
+      sortable: false,
       className: "text-right",
       render: (transaction) => <span>{formatCurrency(transaction.order_amount)}</span>
     },

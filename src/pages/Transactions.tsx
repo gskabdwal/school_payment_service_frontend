@@ -121,7 +121,7 @@ const Transactions = () => {
     )},
     { id: 'school_id', title: 'School ID', sortable: false, render: (transaction) => <span>{transaction.school_id}</span> },
     { id: 'gateway', title: 'Gateway', sortable: false, render: (transaction) => <span>{transaction.gateway}</span> },
-    { id: 'order_amount', title: 'Order Amount', sortable: true, className: "text-right", render: (transaction) => <span>{formatCurrency(transaction.order_amount)}</span> },
+    { id: 'order_amount', title: 'Order Amount', sortable: false, className: "text-right", render: (transaction) => <span>{formatCurrency(transaction.order_amount)}</span> },
     { id: 'transaction_amount', title: 'Transaction Amount', sortable: true, className: "text-right", render: (transaction) => <span>{formatCurrency(transaction.transaction_amount)}</span> },
     { id: 'status', title: 'Status', sortable: true, render: (transaction) => <StatusBadge status={transaction.status} /> },
     { id: 'custom_order_id', title: 'Custom Order ID', sortable: false, render: (transaction) => (
@@ -218,8 +218,74 @@ const Transactions = () => {
             </ScrollArea>
           </div>
         </CardContent>
+        <div className="px-4 py-3">
+        {transactions.length > 0 && (
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={page === 1}
+                  onClick={() => handlePageChange(1)}
+                >
+                  First
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={page === 1}
+                  onClick={() => handlePageChange(page - 1)}
+                >
+                  Previous
+                </Button>
+              </div>
+              <div className="text-sm">
+                Page {page} of {totalPages} ({total} total transactions)
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={page === totalPages || totalPages === 0}
+                  onClick={() => handlePageChange(page + 1)}
+                >
+                  Next
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={page === totalPages || totalPages === 0}
+                  onClick={() => handlePageChange(totalPages)}
+                >
+                  Last
+                </Button>
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <Label htmlFor="limit-select">Items per page:</Label>
+              <Select
+                value={limit.toString()}
+                onValueChange={handleLimitChange}
+              >
+                <SelectTrigger id="limit-select" className="w-[80px]">
+                  <SelectValue placeholder="10" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="10">10</SelectItem>
+                  <SelectItem value="20">20</SelectItem>
+                  <SelectItem value="50">50</SelectItem>
+                  <SelectItem value="100">100</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        )}
+        </div>
       </Card>
-    </div>
+      </div>
+    
   );
 };
 
