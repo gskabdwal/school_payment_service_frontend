@@ -10,7 +10,7 @@ A modern React application for managing school payment transactions, built with 
 - [Project Setup](#project-setup)
 - [Pages and Functionality](#pages-and-functionality)
 - [API Integration](#api-integration)
-- [Authentication](#authentication)
+- [Authentication](#authentication) 
 - [Tech Stack](#tech-stack)
 
 ## Overview
