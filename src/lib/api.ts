@@ -56,12 +56,37 @@ export const register = async (email: string, password: string, role: 'school' |
     return { success: true, message: 'Registration successful', data: { token: 'mock-token-123' } };
   }
   
-  const response = await api.post('/auth/register', { email, password, role, schoolId });
-  // Store the token in localStorage when login is successful
-  if (response.data && response.data.data && response.data.data.token) {
-    localStorage.setItem('token', response.data.data.token);
+  try {
+    // Map frontend parameters to match backend API expectations
+    const payload = {
+      email,
+      password,
+      role,
+      school_id: schoolId // Backend expects school_id, not schoolId
+    };
+    
+    const response = await api.post('/auth/register', payload);
+    
+    // Backend returns token directly in the response body
+    if (response.data && response.data.token) {
+      localStorage.setItem('token', response.data.token);
+      return {
+        success: true,
+        message: 'Registration successful',
+        data: { token: response.data.token }
+      };
+    }
+    
+    return response.data;
+  } catch (error: any) {
+    console.error('Registration error:', error);
+    // Format error response to match expected structure
+    return {
+      success: false,
+      message: error.response?.data?.message || 'Error creating user',
+      error: error.response?.data || error.message
+    };
   }
-  return response.data;
 };
 
 export const login = async (email: string, password: string) => {
