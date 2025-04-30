@@ -57,6 +57,10 @@ export const register = async (email: string, password: string, role: 'school' |
   }
   
   const response = await api.post('/auth/register', { email, password, role, schoolId });
+  // Store the token in localStorage when login is successful
+  if (response.data && response.data.data && response.data.data.token) {
+    localStorage.setItem('token', response.data.data.token);
+  }
   return response.data;
 };
 
